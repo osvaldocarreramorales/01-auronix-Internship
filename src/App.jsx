@@ -46,11 +46,15 @@ function App() {
 
   return (
     <div>
-      <ul>
-        {characters.results?.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
+      {loading && <span>Cragando...</span>}
+      {characters.results.length > 0 && !loading && (
+        <ul>
+          {characters.results?.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      )}
+      {error && <span>{error}</span>}
     </div>
   );
 }
