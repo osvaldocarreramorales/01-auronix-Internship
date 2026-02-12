@@ -56,22 +56,28 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="app-container">
+       <h1>Lista de personajes Rick and Morty</h1>
       {loading && <span>Cragando...</span>}
       {characters.results.length > 0 && !loading && (
         <>
-          <ul>
-            {characters.results?.map((item) => (
-              <li key={item.id}>
-                id: {item.id} name: {item.name} status: {item.status} gender:{" "}
-                {item.gender}
-              </li>
-            ))}
-          </ul>
-          <button onClick={() => fecthData(nextPage)}>
+        <div className="app-card-container">
+          {characters.results?.map((item) => (
+            <article className="app-card" key={item.id}>
+              <span><strong>Id: </strong>{item.id}</span>
+              <span><strong>Nombre: </strong>{item.name}</span>
+              <span><strong>Estado: </strong>{item.status}</span>
+              <span><strong>Genero: </strong>{item.gender}</span>
+            </article>
+          ))}
+
+         
+        </div>
+         <button onClick={() => fecthData(nextPage)}>
             Cargar mas registros
           </button>
         </>
+        
       )}
       {error && <span>{error}</span>}
     </div>
