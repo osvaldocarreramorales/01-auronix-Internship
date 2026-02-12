@@ -3,7 +3,7 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
-  const [characters, setCharacters] = useState([]);
+  const [characters, setCharacters] = useState({ results: [] });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -26,14 +26,14 @@ function App() {
           character.status.toLowerCase().includes("alive"),
         );
 
-        // \s = espacio en blanco, + = toma en cuenta todos los espacios
-        // /g = variable global para afectar a toda la cadena
-        const modifiedCharacters = filteredCharacters.map((char) => ({
-          ...char,
-          name: char.name.replaceAll(/\s+/g, "_"),
+        const finalArrayCharacters = filteredCharacters.map((character) => ({
+          id: character.id,
+          name: character.name.replace(/\s+/g, "_"),
+          status: character.status,
+          gender: character.gender,
         }));
 
-        setCharacters(modifiedCharacters);
+        setCharacters({ results: finalArrayCharacters });
       } catch (err) {
         setError(err.message);
       } finally {
@@ -47,7 +47,7 @@ function App() {
   return (
     <div>
       <ul>
-        {characters.map((item) => (
+        {characters.results?.map((item) => (
           <li key={item.id}>{item.name}</li>
         ))}
       </ul>
