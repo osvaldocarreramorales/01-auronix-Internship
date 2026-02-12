@@ -3,7 +3,7 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
-  const [data, setData] = useState([]);
+  const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -16,9 +16,17 @@ function App() {
           "https://rickandmortyapi.com/api/character",
         );
 
+        if (!response.ok) {
+          throw new Error(`Error al realizar la peticion: ${response.status}`);
+        }
+
         const data = await response.json();
 
-        setData(data.results);
+        const filteredCharacters = data.results.filter((character) =>
+          character.status.toLowerCase().includes("alive"),
+        );
+
+        setCharacters(filteredCharacters);
       } catch (err) {
         setError(err);
       } finally {
@@ -29,7 +37,15 @@ function App() {
     fecthData();
   }, []);
 
-  return <></>;
+  return (
+    <div>
+      <ul>
+        {characters.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default App;
