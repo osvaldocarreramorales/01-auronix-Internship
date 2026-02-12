@@ -3,44 +3,55 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
+  const [nextPage, setNextPage] = useState(null);
   const [characters, setCharacters] = useState({ results: [] });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fecthData = async () => {
-      setLoading(true);
+  const fecthData = async (
+    defaultUrl = "https://rickandmortyapi.com/api/character",
+  ) => {
+    setLoading(true);
 
-      try {
-        const response = await fetch(
-          "https://rickandmortyapi.com/api/character",
-        );
+    try {
+      const response = await fetch(defaultUrl);
 
-        if (!response.ok) {
-          throw new Error(`Error al realizar la peticion: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        const filteredCharacters = data.results.filter((character) =>
-          character.status.toLowerCase().includes("alive"),
-        );
-
-        const finalArrayCharacters = filteredCharacters.map((character) => ({
-          id: character.id,
-          name: character.name.replace(/\s+/g, "_"),
-          status: character.status,
-          gender: character.gender,
-        }));
-
-        setCharacters({ results: finalArrayCharacters });
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(`Error al realizar la peticion: ${response.status}`);
       }
-    };
 
+      const data = await response.json();
+
+      const filteredCharacters = data.results.filter((character) =>
+        character.status.toLowerCase().includes("alive"),
+      );
+
+      const finalArrayCharacters = filteredCharacters.map((character) => ({
+        id: character.id,
+        name: character.name.replace(/\s+/g, "_"),
+        status: character.status,
+        gender: character.gender,
+      }));
+
+      setCharacters((prevData) => {
+        if (defaultUrl === "https://rickandmortyapi.com/api/character") {
+          return { results: finalArrayCharacters };
+        } else {
+          return {
+            results: [...prevData.results, ...finalArrayCharacters],
+          };
+        }
+      });
+
+      setNextPage(data.info.next);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fecthData();
   }, []);
 
@@ -48,11 +59,19 @@ function App() {
     <div>
       {loading && <span>Cragando...</span>}
       {characters.results.length > 0 && !loading && (
-        <ul>
-          {characters.results?.map((item) => (
-            <li key={item.id}>{item.name}</li>
-          ))}
-        </ul>
+        <>
+          <ul>
+            {characters.results?.map((item) => (
+              <li key={item.id}>
+                id: {item.id} name: {item.name} status: {item.status} gender:{" "}
+                {item.gender}
+              </li>
+            ))}
+          </ul>
+          <button onClick={() => fecthData(nextPage)}>
+            Cargar mas registros
+          </button>
+        </>
       )}
       {error && <span>{error}</span>}
     </div>
