@@ -26,9 +26,16 @@ function App() {
           character.status.toLowerCase().includes("alive"),
         );
 
-        setCharacters(filteredCharacters);
+        // \s = espacio en blanco, + = toma en cuenta todos los espacios
+        // /g = variable global para afectar a toda la cadena
+        const modifiedCharacters = filteredCharacters.map((char) => ({
+          ...char,
+          name: char.name.replaceAll(/\s+/g, "_"),
+        }));
+
+        setCharacters(modifiedCharacters);
       } catch (err) {
-        setError(err);
+        setError(err.message);
       } finally {
         setLoading(false);
       }
