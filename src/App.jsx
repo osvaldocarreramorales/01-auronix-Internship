@@ -8,9 +8,9 @@ function App() {
 
   useEffect(() => {
     if (characters.results.length > 0) {
-      console.log(characters.results);
+      console.log(characters);
     }
-  }, [characters.results]);
+  }, [characters]);
 
   return (
     <main className="app-container">
