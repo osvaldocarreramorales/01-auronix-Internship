@@ -1,9 +1,16 @@
+import { useEffect } from "react";
 import "./App.css";
 import CharacterCard from "./components/CharacterCard/CharacterCard";
 import { useCharacters } from "./hooks/useCharacters";
 
 function App() {
   const { characters, loading, error, nextPage, fecthData } = useCharacters();
+
+  useEffect(() => {
+    if (characters.results.length > 0) {
+      console.log(characters.results);
+    }
+  }, [characters.results]);
 
   return (
     <main className="app-container">
