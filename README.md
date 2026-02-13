@@ -1,16 +1,16 @@
-# React + Vite
+# 01-auronix-internship - Rick and Morty API
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación desarrollada en React para la visualización de personajes de la API Rick and Morty, el proyecto está enfocado, en la obtención de datos consumiendo la API, filtración de los datos obtenidos, y modificación de los nombres de los personajes.
 
-Currently, two official plugins are available:
+## Requerimientos técnicos cubiertos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* **Consumo de API**: La aplicación extrae los datos que devuelve la API.
+* **Filtrado de datos**: Los datos obtenidos posteriormente son filtrados para mostrar únicamente los que tienen estatus `Alive`.
+* **Modificacion de datos**: Los datos filtrados se modifican de acuerdo con los requerimientos, se quitan todos los espacios de los nombres y se reemplazan estos mismos con guiones bajos `_`.
+* **Impresion de datos**: Los datos resultantes se muestran en consola y en la interfaz de la aplicacion.
 
-## React Compiler
+## Buenas prácticas realizadas
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* **Custom Hooks**: Se separó la lógica compleja del componente principal para mantener su correcta legibilidad.
+* **Modularización de componentes**: Se realizó un componente aparte `CharacterCard` para mantener la legibilidad del componente principal.
+* **Paginación**: Al observar la estructura de los datos que devuelve la API con POSTMAN se observó que tenía más de una página; por lo tanto, se implementó la paginación para obtener todos los datos, esto con el fin de no saturar a la API y solo cargar más datos si se requiere.
