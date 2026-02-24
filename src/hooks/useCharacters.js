@@ -7,9 +7,9 @@ export const useCharacters = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fecthData = async (
-    defaultUrl = "https://rickandmortyapi.com/api/character",
-  ) => {
+  const API_BASE_URL = "http://localhost:3000/api/characters";
+
+  const fecthData = async (defaultUrl = API_BASE_URL) => {
     setLoading(true);
 
     try {
@@ -21,29 +21,20 @@ export const useCharacters = () => {
 
       const data = await response.json();
 
-      const filteredCharacters = data.results.filter((character) =>
-        character.status.toLowerCase().includes("alive"),
-      );
-
-      const finalArrayCharacters = filteredCharacters.map((character) => ({
-        id: character.id,
-        name: character.name.replace(/\s+/g, "_"),
-        status: character.status,
-        gender: character.gender,
-        image: character.image,
-      }));
+      // los datos ya vienen limpios desde el backend
+      // por lo tanto se elimina esa logica
 
       setCharacters((prevData) => {
-        if (defaultUrl === "https://rickandmortyapi.com/api/character") {
-          return { results: finalArrayCharacters };
+        if (defaultUrl === API_BASE_URL) {
+          return { results: data.results };
         } else {
           return {
-            results: [...prevData.results, ...finalArrayCharacters],
+            results: [...prevData.results, ...data.result],
           };
         }
       });
 
-      setNextPage(data.info.next);
+      setNextPage(data.nextPage);
     } catch (err) {
       setError(err.message);
     } finally {
