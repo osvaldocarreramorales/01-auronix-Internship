@@ -6,8 +6,8 @@ export const useCharacters = () => {
   const [characters, setCharacters] = useState({ results: [] });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const API_BASE_URL = "http://localhost:3000/api/characters";
+  const API_BASE_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:3000/api/characters";
 
   const fecthData = async (defaultUrl = API_BASE_URL) => {
     setLoading(true);
@@ -29,7 +29,7 @@ export const useCharacters = () => {
           return { results: data.results };
         } else {
           return {
-            results: [...prevData.results, ...data.result],
+            results: [...prevData.results, ...data.results],
           };
         }
       });
